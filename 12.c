@@ -2,17 +2,17 @@
 #include <stdlib.h>
 
 int key[20], n, m;
-int *ht, index;
+int *ht, unindex;
 int count = 0;
 
 void insert(int key)
 {
-    index = key % m;
-    while (ht[index] != -1)
+    unindex = key % m;
+    while (ht[unindex] != -1)
     {
-        index = (index + 1) % m;
+        unindex = (unindex + 1) % m;
     }
-    ht[index] = key;
+    ht[unindex] = key;
     count++;
 }
 

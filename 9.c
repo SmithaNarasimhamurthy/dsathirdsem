@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#define COMPARE(x, y) ((x == y) ? 0 : (x > y) ? 1 \
-                                              : -1)
+#define COMPARE(x, y) ((x == y) ? 0 : (x > y) ? 1 : -1)
+
+#define SIDEB \
+    head3 = attach(b->coef, b->xexp, b->yexp, b->zexp, head3)
+
+#define SIDEA \
+    head3 = attach(a->coef, a->xexp, a->yexp, a->zexp, head3)
 
 struct node
 {
@@ -121,37 +126,37 @@ NODE poly_sum(NODE head1, NODE head2, NODE head3)
                 switch (COMPARE(a->xexp, b->xexp))
                 {
                 case -1:
-                    head3 = attach(b->coef, b->xexp, b->yexp, b->zexp, head3);
+                    SIDEB;
                     b = b->link;
                     break;
 
                 case 0:
                     if (a->yexp > b->yexp)
                     {
-                        head3 = attach(a->coef, a->xexp, a->yexp, a->zexp, head3);
+                        SIDEA;
                         a = a->link;
                         break;
                     }
                     else if (a->yexp < b->yexp)
                     {
-                        head3 = attach(b->coef, b->xexp, b->yexp, b->zexp, head3);
+                        SIDEB;
                         b = b->link;
                         break;
                     }
                     else if (a->zexp > b->zexp)
                     {
-                        head3 = attach(a->coef, a->xexp, a->yexp, a->zexp, head3);
+                        SIDEA;
                         a = a->link;
                         break;
                     }
                     else if (a->zexp < b->zexp)
                     {
-                        head3 = attach(b->coef, b->xexp, b->yexp, b->zexp, head3);
+                        SIDEB;
                         b = b->link;
                         break;
                     }
                 case 1:
-                    head3 = attach(a->coef, a->xexp, a->yexp, a->zexp, head3);
+                    SIDEA;
                     a = a->link;
                     break;
                 } // switch ends here
@@ -162,24 +167,24 @@ NODE poly_sum(NODE head1, NODE head2, NODE head3)
                 switch (COMPARE(a->yexp, b->yexp))
                 {
                 case -1:
-                    head3 = attach(b->coef, b->xexp, b->yexp, b->zexp, head3);
+                    SIDEB;
                     b = b->link;
                     break;
                 case 0:
                     if (a->zexp > b->zexp)
                     {
-                        head3 = attach(a->coef, a->xexp, a->yexp, a->zexp, head3);
+                        SIDEA;
                         a = a->link;
                         break;
                     }
                     else if (a->zexp < b->zexp)
                     {
-                        head3 = attach(b->coef, b->xexp, b->yexp, b->zexp, head3);
+                        SIDEB;
                         b = b->link;
                         break;
                     }
                 case 1:
-                    head3 = attach(a->coef, a->xexp, a->yexp, a->zexp, head3);
+                    SIDEA;
                     a = a->link;
                     break;
                 }
@@ -190,11 +195,11 @@ NODE poly_sum(NODE head1, NODE head2, NODE head3)
                 switch (COMPARE(a->zexp, b->zexp))
                 {
                 case -1:
-                    head3 = attach(b->coef, b->xexp, b->yexp, b->zexp, head3);
+                    SIDEB;
                     b = b->link;
                     break;
                 case 1:
-                    head3 = attach(a->coef, a->xexp, a->yexp, a->zexp, head3);
+                    SIDEA;
                     a = a->link;
                     break;
                 }
@@ -204,12 +209,12 @@ NODE poly_sum(NODE head1, NODE head2, NODE head3)
     }
     while (a != head1)
     {
-        head3 = attach(a->coef, a->xexp, a->yexp, a->zexp, head3);
+        SIDEA;
         a = a->link;
     }
     while (b != head2)
     {
-        head3 = attach(b->coef, b->xexp, b->yexp, b->zexp, head3);
+        SIDEB;
         b = b->link;
     }
     return head3;
